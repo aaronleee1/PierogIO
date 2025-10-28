@@ -5,7 +5,6 @@ const { deliveryFee } = require('../../src/delivery');
 const { tax } = require('../../src/tax');
 
 describe('Order Calculations', () => {
-  
   describe('total', () => {
     it('should calculate complete order total', () => {
       const order = {
@@ -37,4 +36,54 @@ describe('Order Calculations', () => {
     });
   });
 
+  describe('subtotal', () => {
+    it('should calculate current subtotal for valid order', () => {
+      const order = {
+        items: [
+          {
+            sku: 'P6-POTATO', // could be any valid SKU (see README.md for examples)
+            title: '6-pack Potato',
+            kind: 'hot', // could be 'hot' or 'frozen'
+            filling: 'potato', // could be 'potato', 'cheese', 'meat', etc.
+            qty: 6, // quantity of this item
+            unitPriceCents: 699, // price per unit in cents
+            addOns: [], // could include 'sour-cream', 'fried-onion', 'bacon-bits'
+          }
+        ]
+      };
+
+      const currCost = subtotal(order);
+      expect(currCost).toBeGreaterThan(0);
+      expect(Number.isInteger(currCost)).toBe(true);
+    });
+  });
+  it ('should throw when order is not valid', () => {
+    const invalidOrder = {
+      items: [
+        {
+          sku: 'Isfjaosifasfi',
+          title: 'aosjfoasjfiosa',
+          kind: 'hot',
+          filling: 'potato',
+          qty: 0,
+          unitPriceCents: 699,
+          addOns: [],
+        }
+      ]
+    };
+
+    expect(() => subtotal(invalidOrder)).toThrowError('Invalid order');
+  });
+  it ('should throw when order is missing items', () => {
+    const invalidOrder = {
+      items: [
+        {
+          sku: 'P6-POTATO',
+        }
+      ]
+    };
+    expect(() => subtotal(invalidOrder)).toThrowError('Order must contain at least one item');
+  });
+
+  
 });
