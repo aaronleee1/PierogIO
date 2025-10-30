@@ -19,7 +19,7 @@ function subtotal(order) {
         'bacon-bits': 199
       };
       for (const addOn of item.addOns) {
-        itemCost += addOnPrices[addOn] * item.qty;
+        itemCost += addOnPrices[addOn] ** item.qty;
       }
     }
 
