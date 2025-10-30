@@ -3,6 +3,15 @@
  * 
  * @param {Object} order - The order object
  * @returns {number} - Subtotal in cents
+ * - subtotal(order) >= 0 for any valid order.
+ * - subtotal(order) is an integer number of cents.
+ * - increasing any item's qty (keeping other fields equal) never decreases subtotal.
+ * - multiplying every item's qty by n multiplies subtotal by n.
+ * - reordering items does not change subtotal.
+ * - subtotal(orderA + orderB) == subtotal(orderA) + subtotal(orderB) when concatenating item lists.
+ * - removing an add-on from an item never increases subtotal.
+ * - invalid shapes (null order, missing items array, non-array addOns, non-string addOn entries,
+ *               missing qty/unitPriceCents, non-integer qty/unitPriceCents) should throw.
  */
 function subtotal(order) {
   let total = 0;
